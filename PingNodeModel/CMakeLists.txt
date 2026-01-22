@@ -23,3 +23,13 @@ target_include_directories(PingNodeModel
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+find_package(Boost 1.8 REQUIRED COMPONENTS system thread json)
+
+target_link_libraries(PingNodeModel PRIVATE
+  Boost::system
+  Boost::thread
+  Boost::json
+)
+
+set_target_properties(PingNodeModel PROPERTIES POSITION_INDEPENDENT_CODE ON)

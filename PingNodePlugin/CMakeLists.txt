@@ -32,21 +32,25 @@ set_target_properties(PingNodePlugin PROPERTIES
 find_package(PluginCore REQUIRED)
 target_link_libraries(PingNodePlugin PRIVATE d3156::PluginCore)
 
-
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel/CMakeLists.txt")
-    message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel not found, downloading...")
-    
-    include(FetchContent)
-    FetchContent_Declare(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel
-        GIT_REPOSITORY https://github.com/d3156/${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel.git
-        GIT_TAG master
-    )
-    FetchContent_MakeAvailable(${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel)
-else()
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel" 
-                     "${CMAKE_BINARY_DIR}/_deps/PingNodeModel")
-endif()
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../PingNodeModel" "${CMAKE_BINARY_DIR}/_deps/PingNodeModel")
 
 target_link_libraries(PingNodePlugin PRIVATE PingNodeModel)
 
+
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../MetricsModel/CMakeLists.txt")
+    message(STATUS "MetricsModel not found, downloading...")
+    
+    include(FetchContent)
+    FetchContent_Declare(
+        MetricsModel
+        GIT_REPOSITORY https://github.com/d3156/MetricsModel.git
+        GIT_TAG master  # или конкретный тег/коммит
+    )
+    FetchContent_MakeAvailable(MetricsModel)
+else()
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../MetricsModel" 
+                     "${CMAKE_BINARY_DIR}/_deps/MetricsModel")
+endif()
+
+
+target_link_libraries(PingNodePlugin PRIVATE MetricsModel)
