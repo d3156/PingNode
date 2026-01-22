@@ -35,7 +35,14 @@ void PingNodePlugin::postInit()
         std::make_unique<PingManager>(nodes, model->icmp_payload, model->ping_interval_sec, model->timeout_ms);
 }
 
+PingNodePlugin::~PingNodePlugin() { 
+    ping_manager.reset();
+    nodes.clear();
+    PrivateNode::PrivateNodeCount.reset();
+}
+
 // ABI required by d3156::PluginCore::Core (dlsym uses exact names)
 extern "C" d3156::PluginCore::IPlugin *create_plugin() { return new PingNodePlugin(); }
 
 extern "C" void destroy_plugin(d3156::PluginCore::IPlugin *p) { delete p; }
+

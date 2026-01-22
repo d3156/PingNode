@@ -33,6 +33,8 @@ class PingNodePlugin final : public d3156::PluginCore::IPlugin
     PingNodeModel *model = nullptr;
     std::unique_ptr<PingManager> ping_manager;
 
+    ~PingNodePlugin();
+
 public:
     void registerArgs(d3156::Args::Builder &bldr) override;
 

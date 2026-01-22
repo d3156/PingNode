@@ -121,7 +121,6 @@ void Pinger::start_receive()
         self->pnode_.available            = true;
         self->pnode_.node.get().latency   = static_cast<uint32_t>(elapsed.count());
         self->pnode_.node.get().available = true;
-        std::cout << self->pnode_.node.get().name << " latency: " << elapsed.count() << " ms" << std::endl;
     };
     socket_.async_receive_from(boost::asio::buffer(reply_), sender_, std::move(recv_callback));
 }
