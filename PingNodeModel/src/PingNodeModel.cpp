@@ -52,6 +52,15 @@ void PingNodeModel::loadSettings()
         timeout_ms        = pt.get<std::uint16_t>("timeout_ms");
         icmp_payload      = pt.get<std::string>("icmp_payload");
 
+        const size_t MAX_ICMP_PAYLOAD_BYTES = 1472;
+        if (icmp_payload.size() > MAX_ICMP_PAYLOAD_BYTES * 2)
+        {
+            std::cout << Y_PingNodeModel << "icmp_payload is too big. Max " << MAX_ICMP_PAYLOAD_BYTES
+                      << " bytes allowed for MTU = 1500\n";
+            std::cout << Y_PingNodeModel << "icmp_payload truncated to " << MAX_ICMP_PAYLOAD_BYTES << " bytes\n";
+            icmp_payload = icmp_payload.substr(0, MAX_ICMP_PAYLOAD_BYTES * 2);
+        }
+
         boost::asio::io_context io;
         for (const auto &n : pt.get_child("nodes")) {
             const auto &node = n.second;
