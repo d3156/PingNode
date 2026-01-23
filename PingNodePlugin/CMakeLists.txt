@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(PingNodePlugin
-  VERSION 1.0.0
+  VERSION 1.0.1
   LANGUAGES CXX
 )
 add_compile_definitions(PingNodePlugin_VERSION="${PROJECT_VERSION}" )

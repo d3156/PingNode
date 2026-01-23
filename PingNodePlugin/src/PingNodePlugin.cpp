@@ -26,6 +26,7 @@ void PingNodePlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
     MetricsModel::instance()      = RegisterModel("MetricsModel", new MetricsModel(), MetricsModel);
     model                         = RegisterModel("PingNodeModel", new PingNodeModel(), PingNodeModel);
     PrivateNode::PrivateNodeCount = std::make_unique<Metrics::Gauge>("PingNodeModelNodeCount");
+    std::cout << G_PingNodeModel << "Register module success\n";
 }
 
 void PingNodePlugin::postInit()
