@@ -6,6 +6,7 @@
 #include <boost/asio.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <PluginCore/Logger/Log.hpp>
 
 namespace fs = std::filesystem;
 using boost::property_tree::ptree;
@@ -17,7 +18,7 @@ std::string get_ip_from_hostname(boost::asio::io_context &io_context, const std:
         boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(hostname, "");
         for (const auto &endpoint : endpoints) return endpoint.endpoint().address().to_string();
     } catch (const std::exception &e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        R_LOG(1, "Error: " << e.what());
     }
     return "";
 }
@@ -26,7 +27,7 @@ void PingNodeModel::loadSettings()
 {
 
     if (!fs::exists(configPath)) {
-        std::cout << Y_PingNodeModel << "Config file " << configPath << " not found. Creating default config...\n";
+        Y_LOG(1, "Config file " << configPath << " not found. Creating default config...");
         fs::create_directories(fs::path(configPath).parent_path());
 
         ptree pt, node;
@@ -40,7 +41,7 @@ void PingNodeModel::loadSettings()
         pt.add_child("nodes", ptree{}).push_back({"", node});
 
         boost::property_tree::write_json(configPath, pt);
-        std::cout << G_PingNodeModel << "Default config created at " << configPath << "\n";
+        G_LOG(1, "Default config created at " << configPath);
         return;
     }
 
@@ -53,11 +54,9 @@ void PingNodeModel::loadSettings()
         icmp_payload      = pt.get<std::string>("icmp_payload");
 
         const size_t MAX_ICMP_PAYLOAD_BYTES = 1472;
-        if (icmp_payload.size() > MAX_ICMP_PAYLOAD_BYTES * 2)
-        {
-            std::cout << Y_PingNodeModel << "icmp_payload is too big. Max " << MAX_ICMP_PAYLOAD_BYTES
-                      << " bytes allowed for MTU = 1500\n";
-            std::cout << Y_PingNodeModel << "icmp_payload truncated to " << MAX_ICMP_PAYLOAD_BYTES << " bytes\n";
+        if (icmp_payload.size() > MAX_ICMP_PAYLOAD_BYTES * 2) {
+            Y_LOG(1, "icmp_payload is too big. Max " << MAX_ICMP_PAYLOAD_BYTES << " bytes allowed for MTU = 1500");
+            Y_LOG(1, "icmp_payload truncated to " << MAX_ICMP_PAYLOAD_BYTES << " bytes");
             icmp_payload = icmp_payload.substr(0, MAX_ICMP_PAYLOAD_BYTES * 2);
         }
 
@@ -70,20 +69,20 @@ void PingNodeModel::loadSettings()
             auto ip   = node.get<std::string>("ip");
 
             if (ip.empty() && !url.empty()) {
-                std::cout << Y_PingNodeModel << "Try to resolve ip by url " << url << "\n";
+                Y_LOG(1, "Try to resolve ip by url " << url);
                 ip = get_ip_from_hostname(io, url);
-                if (!ip.empty()) std::cout << G_PingNodeModel << "Ip resolved " << ip << "\n";
+                if (!ip.empty()) G_LOG(1, "Ip resolved " << ip);
             }
 
             if (ip.empty()) {
-                std::cout << Y_PingNodeModel << "Ip is empty, node " << name << " skipped\n";
+                Y_LOG(1, "Ip is empty, node " << name << " skipped");
                 continue;
             }
 
             nodes.push_back(std::make_unique<Node>(name, url, ip, 0, false));
         }
     } catch (std::exception e) {
-        std::cout << R_PingNodeModel << "error on load config " << configPath << " " << e.what() << std::endl;
+        R_LOG(1, "error on load config " << configPath << " " << e.what());
     }
 }
 

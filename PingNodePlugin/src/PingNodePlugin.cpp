@@ -3,6 +3,7 @@
 #include "MetricsModel.hpp"
 #include "PingNodeModel.hpp"
 #include "Pinger.hpp"
+#include <Logger/Log.hpp>
 #include <memory>
 
 PingNodePlugin::PrivateNode::PrivateNode(const std::unique_ptr<PingNodeModel::Node> &ptr)
@@ -26,7 +27,7 @@ void PingNodePlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
     MetricsModel::instance()      = RegisterModel("MetricsModel", new MetricsModel(), MetricsModel);
     model                         = RegisterModel("PingNodeModel", new PingNodeModel(), PingNodeModel);
     PrivateNode::PrivateNodeCount = std::make_unique<Metrics::Gauge>("PingNodeModelNodeCount");
-    std::cout << G_PingNodeModel << "Register module success\n";
+    G_LOG(1, "Register module success");
 }
 
 void PingNodePlugin::postInit()
@@ -36,7 +37,8 @@ void PingNodePlugin::postInit()
         std::make_unique<PingManager>(nodes, model->icmp_payload, model->ping_interval_sec, model->timeout_ms);
 }
 
-PingNodePlugin::~PingNodePlugin() { 
+PingNodePlugin::~PingNodePlugin()
+{
     ping_manager.reset();
     nodes.clear();
     PrivateNode::PrivateNodeCount.reset();
@@ -46,4 +48,3 @@ PingNodePlugin::~PingNodePlugin() {
 extern "C" d3156::PluginCore::IPlugin *create_plugin() { return new PingNodePlugin(); }
 
 extern "C" void destroy_plugin(d3156::PluginCore::IPlugin *p) { delete p; }
-

@@ -4,6 +4,7 @@ project(PingNodeModel
   LANGUAGES CXX
 )
 
+add_compile_definitions(LOG_NAME="PingNode")
 add_compile_definitions(PingNodeModel_VERSION="${PROJECT_VERSION}" )
 
 set(CMAKE_CXX_STANDARD 20)

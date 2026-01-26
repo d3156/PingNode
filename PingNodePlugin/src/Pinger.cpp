@@ -1,5 +1,6 @@
 #include "Pinger.hpp"
 #include "PingNodePlugin.hpp"
+#include <Logger/Log.hpp>
 #include <ostream>
 #include <string>
 
@@ -69,7 +70,7 @@ void Pinger::start()
 
 void Pinger::cancel(const std::string &err)
 {
-    if (err.size()) std::cout << R_PingNode << err << std::endl;
+    if (err.size()) R_LOG(1, err);
     timer_.cancel();
     if (socket_.is_open()) socket_.cancel();
     pnode_.latency              = 0;
@@ -130,7 +131,7 @@ PingManager::PingManager(std::vector<std::unique_ptr<PingNodePlugin::PrivateNode
     : nodes_(nodes), io_(), timer_(io_), payload_(hex_to_binary(icmp_payload)), ping_interval_sec_(ping_interval_sec),
       timeout_ms_(timeout_ms), thread_([this]() {
           schedule_ping();
-          std::cout << G_PingNode << "PingManager run" << std::endl;
+          G_LOG(1, "PingManager run");
           io_.run();
       })
 {
@@ -144,22 +145,21 @@ PingManager::~PingManager()
         active_pingers_.clear();
         if (!thread_.joinable()) return;
         int stopThreadTimeoutMs = 200;
-        std::cout << G_PingNode << "Trying to join PingManager thread for " << stopThreadTimeoutMs << "ms\n";
+        G_LOG(1, "Trying to join PingManager thread for " << stopThreadTimeoutMs << "ms");
         if (thread_.timed_join(boost::posix_time::milliseconds(stopThreadTimeoutMs))) {
-            std::cout << G_PingNode << "PingManager thread joined successfully" << std::endl;
+            G_LOG(1, "PingManager thread joined successfully");
             return;
         }
-        std::cout << Y_PingNode << "PingManager thread did not terminate in time, forcing io_context stop...\n";
+        Y_LOG(1, "PingManager thread did not terminate in time, forcing io_context stop...");
         io_.stop();
         if (thread_.timed_join(stopThreadTimeoutMs)) {
-            std::cout << G_PingNode << "PingManager thread force-stopped successfully" << std::endl;
+            G_LOG(1, "PingManager thread force-stopped successfully");
             return;
         }
-        std::cout << R_PingNode
-                  << "WARNING: PingManager thread cannot be stopped. Detaching thread (potential resource leak)\n";
+        R_LOG(1, "WARNING: PingManager thread cannot be stopped. Detaching thread (potential resource leak)");
         thread_.detach();
     } catch (const std::exception &e) {
-        std::cout << R_PingNode << "Exception in PingManager destructor: " << e.what() << std::endl;
+        R_LOG(1, "Exception in PingManager destructor: " << e.what());
     }
 }
 
@@ -173,7 +173,7 @@ void PingManager::schedule_ping()
             pinger->start();
             active_pingers_.push_back(pinger);
         } catch (const std::exception &e) {
-            std::cout << R_PingNode << "Error pinging " << n->node.get().name << ": " << e.what() << "\n";
+            R_LOG(1, "Error pinging " << n->node.get().name << ": " << e.what());
         }
     }
     timer_.expires_after(std::chrono::seconds(ping_interval_sec_));

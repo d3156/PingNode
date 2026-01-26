@@ -8,10 +8,6 @@
 #include <MetricsModel.hpp>
 #include <vector>
 
-#define Y_PingNode "\033[33m[PingNode]\033[0m "
-#define R_PingNode "\033[31m[PingNode]\033[0m "
-#define G_PingNode "\033[32m[PingNode]\033[0m "
-#define W_PingNode "[PingNode] "
 class PingManager;
 
 class PingNodePlugin final : public d3156::PluginCore::IPlugin

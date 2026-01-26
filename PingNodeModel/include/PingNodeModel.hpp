@@ -5,12 +5,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-#define Y_PingNodeModel "\033[33m[PingNodeModel]\033[0m "
-#define R_PingNodeModel "\033[31m[PingNodeModel]\033[0m "
-#define G_PingNodeModel "\033[32m[PingNodeModel]\033[0m "
-#define W_PingNodeModel "[PingNodeModel] "
-
 class PingNodeModel final : public d3156::PluginCore::IModel
 {
 public:
