@@ -3,7 +3,7 @@ project(PingNodePlugin
   VERSION 1.0.1
   LANGUAGES CXX
 )
-add_compile_definitions(LOG_NAME="PingNode")
+
 add_compile_definitions(PingNodePlugin_VERSION="${PROJECT_VERSION}" )
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,6 +22,8 @@ target_include_directories(PingNodePlugin
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+target_compile_definitions(PingNodePlugin PRIVATE $<$<COMPILE_LANGUAGE:CXX>:LOG_NAME="PingNode">)
 
 # Put resulting .so into workspace/Plugins
 set_target_properties(PingNodePlugin PROPERTIES

@@ -4,7 +4,6 @@ project(PingNodeModel
   LANGUAGES CXX
 )
 
-add_compile_definitions(LOG_NAME="PingNode")
 add_compile_definitions(PingNodeModel_VERSION="${PROJECT_VERSION}" )
 
 set(CMAKE_CXX_STANDARD 20)
@@ -24,6 +23,8 @@ target_include_directories(PingNodeModel
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+target_compile_definitions(PingNodeModel PRIVATE $<$<COMPILE_LANGUAGE:CXX>:LOG_NAME="PingNode">)
 
 find_package(Boost 1.8 REQUIRED COMPONENTS system thread json)
 
