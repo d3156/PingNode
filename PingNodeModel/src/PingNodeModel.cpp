@@ -1,7 +1,6 @@
 #include "PingNodeModel.hpp"
 #include <exception>
 #include <filesystem>
-#include <boost/json.hpp>
 #include <memory>
 #include <boost/asio.hpp>
 #include <boost/property_tree/ptree.hpp>

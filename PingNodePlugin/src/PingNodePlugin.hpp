@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Metrics.hpp"
 #include <PluginCore/IPlugin.hpp>
 #include <PluginCore/IModel.hpp>
 
-#include <PingNodeModel.hpp>
-#include <MetricsModel.hpp>
+#include <PingNodeModel>
+#include <MetricsModel/MetricsModel>
 #include <vector>
 
 class PingManager;

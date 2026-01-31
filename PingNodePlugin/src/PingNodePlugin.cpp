@@ -1,7 +1,4 @@
 #include "PingNodePlugin.hpp"
-#include "Metrics.hpp"
-#include "MetricsModel.hpp"
-#include "PingNodeModel.hpp"
 #include "Pinger.hpp"
 #include <Logger/Log.hpp>
 #include <memory>

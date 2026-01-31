@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 class PingNodeModel final : public d3156::PluginCore::IModel
 {
 public:
