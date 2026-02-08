@@ -87,10 +87,11 @@ void PingNodeModel::loadSettings()
 
 void PingNodeModel::registerArgs(d3156::Args::Builder &bldr)
 {
-    bldr.setVersion("PingNodeModel " + std::string(PingNodeModel_VERSION))
-        .addOption(configPath, "PingNodeConfig", "Path to PingNode.json");
+    bldr.setVersion(FULL_NAME).addOption(configPath, "PingNodeConfig", "Path to PingNode.json");
 }
 
 void PingNodeModel::postInit() { loadSettings(); }
 
 const std::vector<std::unique_ptr<PingNodeModel::Node>> &PingNodeModel::get_nodes() { return nodes; }
+
+std::string PingNodeModel::name() { return FULL_NAME; }

@@ -20,7 +20,7 @@ public:
     const std::vector<std::unique_ptr<Node>> &get_nodes();
 
     //// Service
-    d3156::PluginCore::model_name name() override { return "PingNodeModel"; }
+    static std::string name();
     int deleteOrder() override { return 0; }
     void init() override {}
     void postInit() override;

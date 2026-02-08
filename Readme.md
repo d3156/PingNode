@@ -160,11 +160,7 @@ Example model registration and access:
 ```c++
 void MyPlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
 {
-    model = RegisterModel(
-        "PingNodeModel",
-        new PingNodeModel(),
-        PingNodeModel
-    );
+    model = models.registerModel<PingNodeModel>();
 }
 ```
 Once registered, the plugin can retrieve the list of nodes and read their current status:

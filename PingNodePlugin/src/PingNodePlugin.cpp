@@ -14,15 +14,12 @@ PingNodePlugin::PrivateNode::PrivateNode(const std::unique_ptr<PingNodeModel::No
 
 std::unique_ptr<Metrics::Gauge> PingNodePlugin::PrivateNode::PrivateNodeCount;
 
-void PingNodePlugin::registerArgs(d3156::Args::Builder &bldr)
-{
-    bldr.setVersion("PingNodePlugin " + std::string(PingNodePlugin_VERSION));
-}
+void PingNodePlugin::registerArgs(d3156::Args::Builder &bldr) { bldr.setVersion(FULL_NAME); }
 
 void PingNodePlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
 {
-    MetricsModel::instance()      = RegisterModel("MetricsModel", new MetricsModel(), MetricsModel);
-    model                         = RegisterModel("PingNodeModel", new PingNodeModel(), PingNodeModel);
+    MetricsModel::instance()      = models.registerModel<MetricsModel>();
+    model                         = models.registerModel<PingNodeModel>();
     PrivateNode::PrivateNodeCount = std::make_unique<Metrics::Gauge>("PingNodeModelNodeCount");
     G_LOG(1, "Register module success");
 }
