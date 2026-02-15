@@ -1,7 +1,7 @@
 #pragma once
 
-#include <PluginCore/IPlugin.hpp>
-#include <PluginCore/IModel.hpp>
+#include <PluginCore/IPlugin>
+#include <PluginCore/IModel>
 
 #include <PingNodeModel>
 #include <MetricsModel/MetricsModel>

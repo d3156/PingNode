@@ -5,7 +5,7 @@
 #include <boost/asio.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-#include <PluginCore/Logger/Log.hpp>
+#include <PluginCore/Logger/Log>
 
 namespace fs = std::filesystem;
 using boost::property_tree::ptree;

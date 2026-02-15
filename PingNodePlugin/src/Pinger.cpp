@@ -1,6 +1,6 @@
 #include "Pinger.hpp"
 #include "PingNodePlugin.hpp"
-#include <Logger/Log.hpp>
+#include <PluginCore/Logger/Log>
 #include <ostream>
 #include <string>
 

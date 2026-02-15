@@ -1,6 +1,6 @@
 #include "PingNodePlugin.hpp"
 #include "Pinger.hpp"
-#include <Logger/Log.hpp>
+#include <PluginCore/Logger/Log>
 #include <memory>
 
 PingNodePlugin::PrivateNode::PrivateNode(const std::unique_ptr<PingNodeModel::Node> &ptr)

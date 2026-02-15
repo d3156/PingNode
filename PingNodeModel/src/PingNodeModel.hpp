@@ -1,5 +1,5 @@
 #pragma once
-#include <PluginCore/IModel.hpp>
+#include <PluginCore/IModel>
 #include <atomic>
 #include <cstdint>
 #include <memory>
