@@ -99,27 +99,27 @@ Executable  : ./PluginLoader
 
 ## Metrics Integration
 
-The PingNode Plugin is integrated with [d3156/MetricsModel](https://github.com/d3156/MetricsModel), which provides a common metrics interface for interaction with metric exporter plugins.
+The PingNode Plugin is integrated with [d3156/MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel), which provides a common metrics interface for interaction with metric exporter plugins.
 
-[MetricsModel](https://github.com/d3156/MetricsModel) implements the d3156::PluginCore::IModel interface and acts as a shared abstraction layer between metric producers (such as PingNode Plugin) and metric consumers (exporter plugins).
+[MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel) implements the d3156::PluginCore::IModel interface and acts as a shared abstraction layer between metric producers (such as PingNode Plugin) and metric consumers (exporter plugins).
 
 ### MetricsModel Overview
 
-- [d3156/MetricsModel](https://github.com/d3156/MetricsModel) is a centralized model used to collect and expose runtime metrics
+- [d3156/MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel) is a centralized model used to collect and expose runtime metrics
 
-- Plugins publish metrics to [MetricsModel](https://github.com/d3156/MetricsModel)
+- Plugins publish metrics to [MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel)
 
-- Exporter plugins consume metrics from [MetricsModel](https://github.com/d3156/MetricsModel) and expose them to external monitoring systems
+- Exporter plugins consume metrics from [MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel) and expose them to external monitoring systems
 
 This design decouples metric generation from metric export and allows multiple exporters to coexist without changes to producer plugins.
 
 ### Prometheus Export Example
 
-An example consumer of [MetricsModel](https://github.com/d3156/MetricsModel) is the [d3156/PrometheusExporter](https://github.com/d3156/PrometheusExporterPlugin) plugin.
+An example consumer of [MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel) is the [d3156/PrometheusExporter](https://gitlab.bubki.zip/d3156/PrometheusExporterPlugin) plugin.
 
 #### The Prometheus exporter:
 
-- Reads metrics from [MetricsModel](https://github.com/d3156/MetricsModel)
+- Reads metrics from [MetricsModel](https://gitlab.bubki.zip/d3156/MetricsModel)
 
 - Translates them into Prometheus-compatible format
 
