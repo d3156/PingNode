@@ -28,3 +28,10 @@ PingNodeModel::Node::Node(Node &&other)
 }
 
 PingNodeModel::Node::Node() : d3156::Config("") {}
+
+void PingNodeModel::postInit()
+{
+    boost::asio::io_context io;
+    for (auto &i : config.nodes.items)
+        if (i.ip.value.empty() && !i.url.value.empty()) i.ip.value = get_ip_from_hostname(io, i.url.value);
+}

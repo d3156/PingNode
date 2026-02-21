@@ -34,6 +34,7 @@ public:
     int deleteOrder() override { return 0; }
     void init() override {}
     void registerArgs(d3156::Args::Builder &bldr) override;
+    void postInit() override;
     //// Service
 private:
     Config config;
