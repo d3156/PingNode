@@ -2,9 +2,10 @@
 #include "Pinger.hpp"
 #include <PluginCore/Logger/Log>
 #include <memory>
+#include <ConfiguratorModel>
 
-PingNodePlugin::PrivateNode::PrivateNode(const std::unique_ptr<PingNodeModel::Node> &ptr)
-    : node(*ptr), guard(*PrivateNodeCount),
+PingNodePlugin::PrivateNode::PrivateNode(PingNodeModel::Node &ptr)
+    : node(ptr), guard(*PrivateNodeCount),
       available(Metrics::Bool("PingNodeAvailible",
                               {{"name", node.get().name}, {"ip", node.get().ip}, {"url", node.get().url}})),
       latency(Metrics::Gauge("PingNodeLatency",
@@ -21,14 +22,15 @@ void PingNodePlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
     MetricsModel::instance()      = models.registerModel<MetricsModel>();
     model                         = models.registerModel<PingNodeModel>();
     PrivateNode::PrivateNodeCount = std::make_unique<Metrics::Gauge>("PingNodeModelNodeCount");
+    models.registerModel<ConfiguratorModel>()->registerConfig("PingNode", model->config);
     G_LOG(1, "Register module success");
 }
 
 void PingNodePlugin::postInit()
 {
-    for (const auto &i : model->get_nodes()) nodes.push_back(std::make_unique<PrivateNode>(i));
-    ping_manager =
-        std::make_unique<PingManager>(nodes, model->icmp_payload, model->ping_interval_sec, model->timeout_ms);
+    for (auto &i : model->config.nodes.items) nodes.emplace_back(std::make_unique<PrivateNode>(i));
+    ping_manager = std::make_unique<PingManager>(nodes, model->config.icmp_payload, model->config.ping_interval_sec,
+                                                 model->config.timeout_ms);
 }
 
 PingNodePlugin::~PingNodePlugin()

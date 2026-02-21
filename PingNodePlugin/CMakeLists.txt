@@ -8,3 +8,4 @@ target_link_libraries(PingNodePlugin PRIVATE Boost::system Boost::thread Boost::
 
 dependency("../.." PingNodeModel "https://gitlab.bubki.zip/d3156/PingNode.git")
 dependency("../.." MetricsModel "https://gitlab.bubki.zip/d3156/MetricsModel.git")
+dependency("../.." ConfiguratorModel "https://gitlab.bubki.zip/d3156/PluginConfigurator")

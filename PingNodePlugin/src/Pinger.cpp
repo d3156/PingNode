@@ -173,7 +173,7 @@ void PingManager::schedule_ping()
             pinger->start();
             active_pingers_.push_back(pinger);
         } catch (const std::exception &e) {
-            R_LOG(1, "Error pinging " << n->node.get().name << ": " << e.what());
+            R_LOG(1, "Error pinging " << n->node.get().name.value << ": " << e.what());
         }
     }
     timer_.expires_after(std::chrono::seconds(ping_interval_sec_));

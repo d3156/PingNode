@@ -14,7 +14,7 @@ class PingNodePlugin final : public d3156::PluginCore::IPlugin
     friend class Pinger;
     friend class PingManager;
     struct PrivateNode {
-        PrivateNode(const std::unique_ptr<PingNodeModel::Node> &ptr);
+        PrivateNode(PingNodeModel::Node &ptr);
 
         std::reference_wrapper<PingNodeModel::Node> node;
         Metrics::Bool available;
