@@ -2,6 +2,7 @@
 #include <PluginCore/IModel>
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 #include <BaseConfig>
@@ -27,7 +28,7 @@ public:
         CONFIG_ARRAY(nodes, Node);
     };
 
-    std::vector<Node> &get_nodes();
+    std::vector<std::unique_ptr<Node>> &get_nodes();
 
     //// Service
     static std::string name();

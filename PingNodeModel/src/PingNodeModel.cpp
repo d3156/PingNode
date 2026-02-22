@@ -17,7 +17,7 @@ std::string get_ip_from_hostname(boost::asio::io_context &io_context, const std:
 
 void PingNodeModel::registerArgs(d3156::Args::Builder &bldr) { bldr.setVersion(FULL_NAME); }
 
-std::vector<PingNodeModel::Node> &PingNodeModel::get_nodes() { return config.nodes.items; }
+std::vector<std::unique_ptr<PingNodeModel::Node>> &PingNodeModel::get_nodes() { return config.nodes.items; }
 
 std::string PingNodeModel::name() { return FULL_NAME; }
 
@@ -33,5 +33,5 @@ void PingNodeModel::postInit()
 {
     boost::asio::io_context io;
     for (auto &i : config.nodes.items)
-        if (i.ip.value.empty() && !i.url.value.empty()) i.ip.value = get_ip_from_hostname(io, i.url.value);
+        if (i->ip.value.empty() && !i->url.value.empty()) i->ip.value = get_ip_from_hostname(io, i->url.value);
 }

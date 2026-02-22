@@ -28,7 +28,7 @@ void PingNodePlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
 
 void PingNodePlugin::postInit()
 {
-    for (auto &i : model->config.nodes.items) nodes.emplace_back(std::make_unique<PrivateNode>(i));
+    for (auto &i : model->config.nodes.items) nodes.emplace_back(std::make_unique<PrivateNode>(*i));
     ping_manager = std::make_unique<PingManager>(nodes, model->config.icmp_payload, model->config.ping_interval_sec,
                                                  model->config.timeout_ms);
 }
