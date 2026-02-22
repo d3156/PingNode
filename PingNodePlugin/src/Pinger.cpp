@@ -64,13 +64,16 @@ void Pinger::start()
     self->send_echo();
     timer_.expires_after(std::chrono::milliseconds(timeout_ms_));
     timer_.async_wait([self](const boost::system::error_code &ec) {
-        if (!ec) self->cancel();
+        if (!ec) self->cancel(ec.what());
     });
 }
 
 void Pinger::cancel(const std::string &err)
 {
-    if (err.size()) R_LOG(1, err);
+    if (err.size())
+        R_LOG(1, err);
+    else
+        R_LOG(1, "Cancel ping request");
     timer_.cancel();
     if (socket_.is_open()) socket_.cancel();
     pnode_.latency              = 0;
@@ -141,7 +144,9 @@ PingManager::~PingManager()
 {
     try {
         timer_.cancel();
-        for (auto &p : active_pingers_) p->cancel();
+        for (auto &p : active_pingers_)
+            if (auto pp = p.lock()) pp->cancel("Exit and destruct Plugin");
+        for (auto &n : nodes_) n->latency = 0;
         active_pingers_.clear();
         if (!thread_.joinable()) return;
         int stopThreadTimeoutMs = 200;
@@ -165,13 +170,14 @@ PingManager::~PingManager()
 
 void PingManager::schedule_ping()
 {
-    for (auto &p : active_pingers_) p->cancel();
+    for (auto &p : active_pingers_)
+        if (auto pp = p.lock()) pp->cancel("Has not last ping reply ");
     active_pingers_.clear();
     for (auto &n : nodes_) {
         try {
             auto pinger = std::make_shared<Pinger>(io_, *n, payload_, timeout_ms_);
             pinger->start();
-            active_pingers_.push_back(pinger);
+            active_pingers_.push_back(pinger->weak_from_this());
         } catch (const std::exception &e) {
             R_LOG(1, "Error pinging " << n->node.get().name.value << ": " << e.what());
         }

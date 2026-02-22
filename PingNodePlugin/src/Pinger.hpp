@@ -47,7 +47,7 @@ private:
     boost::asio::io_context io_;
     boost::asio::steady_timer timer_;
     std::vector<unsigned char> payload_;
-    std::vector<std::shared_ptr<Pinger>> active_pingers_;
+    std::vector<std::weak_ptr<Pinger>> active_pingers_;
     int ping_interval_sec_;
     int timeout_ms_;
     boost::thread thread_;
